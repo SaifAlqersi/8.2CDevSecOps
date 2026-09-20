@@ -15,9 +15,9 @@ pipeline {
         }
 
         stage('Snyk Security Scan') {
-            steps {
-                bat 'snyk test || exit /b 0'
-            }
-        }
+    steps {
+        bat 'npx snyk test || exit /b 0'
+    }
+}
     }
 }
