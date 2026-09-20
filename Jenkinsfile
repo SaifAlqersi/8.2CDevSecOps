@@ -8,10 +8,16 @@ pipeline {
             }
         }
 
-stage('Security Audit') {
-    steps {
-        bat 'npm audit || exit /b 0'
-    }
-}
+        stage('Security Audit') {
+            steps {
+                bat 'npm audit || exit /b 0'
+            }
+        }
+
+        stage('Snyk Security Scan') {
+            steps {
+                bat 'snyk test || exit /b 0'
+            }
+        }
     }
 }
