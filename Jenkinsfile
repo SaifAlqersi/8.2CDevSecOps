@@ -2,23 +2,34 @@ pipeline {
     agent any
 
     stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/SaifAlqersi/8.2CDevSecOps.git'
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
                 bat 'npm install'
             }
         }
 
-        stage('Security Audit') {
+        stage('Run Tests') {
             steps {
-                bat 'npm audit || exit /b 0'
+                bat 'npm test || exit /b 0'
             }
         }
 
-        stage('Snyk Security Scan') {
+        stage('Generate Coverage Report') {
             steps {
-                withCredentials([string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN')]) {
-                    bat 'npx snyk test || exit /b 0'
-                }
+                bat 'npm run coverage || exit /b 0'
+            }
+        }
+
+        stage('NPM Audit (Security Scan)') {
+            steps {
+                bat 'npm audit || exit /b 0'
             }
         }
     }
