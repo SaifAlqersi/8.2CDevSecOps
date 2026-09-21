@@ -15,9 +15,11 @@ pipeline {
         }
 
         stage('Snyk Security Scan') {
-    steps {
-        bat 'npx snyk test || exit /b 0'
-    }
-}
+            steps {
+                withCredentials([string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN')]) {
+                    bat 'npx snyk test || exit /b 0'
+                }
+            }
+        }
     }
 }
